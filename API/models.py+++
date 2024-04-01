@@ -7,15 +7,24 @@ class DeviceType(models.Model):
     def __str__(self):
         return self.name
     
+class Batch(models.Model):
+    vender_name = models.CharField(max_length=100)
+    invoice_date = models.DateField()
+    production_date = models.DateField()
+    warranty_exp_date = models.DateField()
+    incoice_number = models.CharField(max_length=100)
+    number_of_device = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+    
 class Device(models.Model):
     device_id = models.CharField(max_length=100)
     device_type = models.ForeignKey(DeviceType, on_delete=models.CASCADE)  # ForeignKey to DeviceType model
-    battery_status = models.CharField(max_length=100, default='')
-    device_status = models.BooleanField(default=False)  # BooleanField
+    batch_id = models.ForeignKey(Batch, on_delete=models.CASCADE)  
+    mac_id = models.CharField(max_length=100)
+    status = models.BooleanField(default=True)
     
-    def __str__(self):
-        return f"{self.device_id} - {self.device_type.name}"
-
 class DeviceStatus(models.Model):
     device_id = models.CharField(max_length=100)
     battery_status = models.CharField(max_length=100, default='')
@@ -23,6 +32,15 @@ class DeviceStatus(models.Model):
     device_log = models.CharField(max_length=100)
     device_lat = models.CharField(max_length=100)
     device_gforce = models.CharField(max_length=100)
+    
+ 
+    
+    # ForeignKey to DeviceType model
+   # battery_status = models.CharField(max_length=100, default='')
+   # device_status = models.BooleanField(default=False)  # BooleanField
+    
+    def __str__(self):
+        return f"{self.device_id} - {self.device_type.name}"
    
 
 class District(models.Model):

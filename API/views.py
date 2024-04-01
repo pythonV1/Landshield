@@ -7,12 +7,32 @@ from rest_framework.decorators import parser_classes
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
-from .models import Device, District,Taluk,Village,Customer,PropertyRegistration,PropertyDevice,Geolocation,PropertyDeviceDevice
-from .serializers import DeviceSerializer,DistrictSerializer,TalukSerializer,VillageSerializer,CustomerSerializer,PropertyRegistrationSerializer,GeolocationSerializer,PropertyDeviceSerializer,PropertyDeviceDeviceSerializer
+from .models import Device,DeviceStatus, District,Taluk,Village,Customer,PropertyRegistration,PropertyDevice,Geolocation,PropertyDeviceDevice
+from .serializers import DeviceSerializer,DeviceStatusSerializer,DistrictSerializer,TalukSerializer,VillageSerializer,CustomerSerializer,PropertyRegistrationSerializer,GeolocationSerializer,PropertyDeviceSerializer,PropertyDeviceDeviceSerializer
 import json
 from json.decoder import JSONDecodeError
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.views import View
 from rest_framework_simplejwt.tokens import RefreshToken
+import hashlib
+
+def generate_token():
+    # Generate a token using a unique identifier (e.g., UUID)
+    unique_identifier = 'your_unique_identifier'  # You can use any unique identifier here
+    token = hashlib.sha256(unique_identifier.encode()).hexdigest()
+    return token
+
+@method_decorator(csrf_exempt, name='dispatch')
+class TokenGeneratorView(View):
+    def get(self, request, *args, **kwargs):
+        # Generate a token
+        auth_token = generate_token()
+
+        # Return the token as part of the JSON response
+        return JsonResponse({'token': auth_token})
 
 @api_view(['GET'])
 def devices_list(request):
@@ -43,6 +63,27 @@ def add_device(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+
+class DeviceStatusDetailView(APIView):
+    def get_object(self, device_id):
+        try:
+            return DeviceStatus.objects.get(device_id=device_id)
+        except DeviceStatus.DoesNotExist:
+            raise Http404
+
+    def get(self, request, device_id, format=None):
+        devicestatus = self.get_object(device_id)
+        serializer = DeviceStatusSerializer(devicestatus)
+        return Response(serializer.data)
+
+    def put(self, request, device_id, format=None):
+        devicestatus = self.get_object(device_id)
+        serializer = DeviceStatusSerializer(devicestatus, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Device status updated successfully."}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT', 'PATCH'])
 def update_device(request, pk):

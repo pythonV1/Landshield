@@ -1,12 +1,21 @@
 # serializers.py
 
 from rest_framework import serializers
-from .models import Device,District,Taluk,Village,Customer,PropertyRegistration,Geolocation,PropertyDevice,PropertyDeviceDevice
+from .models import Device,DeviceStatus,District,Taluk,Village,Customer,PropertyRegistration,Geolocation,PropertyDevice,PropertyDeviceDevice
+
+
+
+
+
+class DeviceStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeviceStatus
+        fields = ['id', 'device_id', 'battery_status', 'device_status', 'device_log', 'device_lat', 'device_gforce']
 
 class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Device
-        fields = ['device_id', 'device_type', 'battery_status','device_status']
+        fields = ['device_id', 'device_type', 'batch_id','mac_id','device_status']
         
 class DistrictSerializer(serializers.ModelSerializer):
     class Meta:

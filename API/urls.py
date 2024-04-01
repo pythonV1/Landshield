@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LoginAPI, add_device, devices_list, update_device, delete_device,add_district,districts_list,update_district,delete_district,taluks_list,add_taluk,update_taluk,delete_taluk,add_village,village_list,update_village,delete_village,customers_list,update_customer,delete_customer,add_customer,add_property_registration,property_registrations_list,update_property_registration,delete_property_registration,add_property_device,property_device_list,update_property_device,delete_property_device,geolocations_by_propertyregistrations,dashboard_data,survey_details_api
+from .views import LoginAPI, add_device, devices_list, update_device, DeviceStatusDetailView,delete_device,add_district,districts_list,update_district,delete_district,taluks_list,add_taluk,update_taluk,delete_taluk,add_village,village_list,update_village,delete_village,customers_list,update_customer,delete_customer,add_customer,add_property_registration,property_registrations_list,update_property_registration,delete_property_registration,add_property_device,property_device_list,update_property_device,delete_property_device,geolocations_by_propertyregistrations,dashboard_data,survey_details_api,TokenGeneratorView
 
 
 urlpatterns = [
@@ -39,4 +39,6 @@ urlpatterns = [
     path('propertydevice/update/<int:pk>/', update_property_device, name='update-property-device'),
     path('propertydevice/delete/<int:pk>/', delete_property_device, name='delete-property-device'),
     path('survey-details/<int:pk>/', survey_details_api, name='survey-details-api'),
+    path('api/devicesUpdates/<str:device_id>/', DeviceStatusDetailView.as_view(), name='device-status-detail'),
+    path('generate-token/', TokenGeneratorView.as_view(), name='generate_token'),
 ]

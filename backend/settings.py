@@ -34,7 +34,7 @@ logging.basicConfig(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.108.250.113']
+ALLOWED_HOSTS = ['3.108.250.113','localhost']
 
 
 # Application definition
