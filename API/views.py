@@ -64,26 +64,30 @@ def add_device(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-class DeviceStatusDetailView(APIView):
-    def get_object(self, device_id):
+@method_decorator(csrf_exempt, name='dispatch')
+class DeviceStatusDetailView(View):
+    def post(self, request, device_id, *args, **kwargs):
+        # Extract JSON data from the request body
         try:
-            return DeviceStatus.objects.get(device_id=device_id)
-        except DeviceStatus.DoesNotExist:
-            raise Http404
+            request_data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON data in request body"}, status=400)
 
-    def get(self, request, device_id, format=None):
-        devicestatus = self.get_object(device_id)
-        serializer = DeviceStatusSerializer(devicestatus)
-        return Response(serializer.data)
+        # Check if a DeviceStatus object with the given device_id exists
+        device_status, created = DeviceStatus.objects.get_or_create(device_id=device_id)
 
-    def put(self, request, device_id, format=None):
-        devicestatus = self.get_object(device_id)
-        serializer = DeviceStatusSerializer(devicestatus, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "Device status updated successfully."}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Update the device status attributes
+        device_status.battery_status = request_data.get('battery_status', device_status.battery_status)
+        device_status.device_status = request_data.get('device_status', device_status.device_status)
+        device_status.device_log = request_data.get('device_log', device_status.device_log)
+        device_status.device_lat = request_data.get('device_lat', device_status.device_lat)
+        device_status.device_gforce = request_data.get('device_gforce', device_status.device_gforce)
+
+        # Save the device status object
+        device_status.save()
+
+        # Return a JSON response
+        return JsonResponse({"detail": f"Device status updated for device {device_id}."})
 
 @api_view(['PUT', 'PATCH'])
 def update_device(request, pk):
