@@ -39,6 +39,6 @@ urlpatterns = [
     path('propertydevice/update/<int:pk>/', update_property_device, name='update-property-device'),
     path('propertydevice/delete/<int:pk>/', delete_property_device, name='delete-property-device'),
     path('survey-details/<int:pk>/', survey_details_api, name='survey-details-api'),
-    path('api/devicesUpdates/<str:device_id>/', DeviceStatusDetailView.as_view(), name='device-status-detail'),
+    path('devicesUpdates/<str:device_id>/', DeviceStatusDetailView.as_view(), name='device-status-detail'),
     path('generate-token/', TokenGeneratorView.as_view(), name='generate_token'),
 ]
