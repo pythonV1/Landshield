@@ -66,13 +66,13 @@ def add_device(request):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class DeviceStatusDetailView(View):
-    def post(self, request, device_id, *args, **kwargs):
+    def post(self, request,  *args, **kwargs):
         # Extract JSON data from the request body
         try:
             request_data = json.loads(request.body)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON data in request body"}, status=400)
-
+        device_id = request_data.get('battery_status', device_status.battery_status)
         # Check if a DeviceStatus object with the given device_id exists
         device_status, created = DeviceStatus.objects.get_or_create(device_id=device_id)
 
