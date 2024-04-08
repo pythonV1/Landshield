@@ -63,6 +63,36 @@ def add_device(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+@csrf_exempt
+def device_status_detail_view(request):
+    if request.method == 'POST':
+        try:
+            # Extract JSON data from the request body
+            request_data = json.loads(request.body)
+            device_id = request_data.get('device_id')
+            battery_status = request_data.get('battery_status')
+            device_status = request_data.get('device_status')
+            device_log = request_data.get('device_log')
+            device_lat = request_data.get('device_lat')
+            device_gforce = request_data.get('device_gforce')
+            
+            # Create a new DeviceStatus object
+            device_status_obj = DeviceStatus.objects.create(
+                device_id=device_id,
+                battery_status=battery_status,
+                device_status=device_status,
+                device_log=device_log,
+                device_lat=device_lat,
+                device_gforce=device_gforce
+            )
+            
+            # Return a success response
+            return JsonResponse({"detail": f"Device status created for device {device_id}."}, status=201)
+        
+        except JSONDecodeError:
+            # Return an error response for invalid JSON data
+            return JsonResponse({"error": "Invalid JSON data in request body"}, status=400)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class DeviceStatusDetailView(View):
