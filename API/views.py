@@ -70,7 +70,8 @@ def device_status_detail_view(request):
         try:
             # Extract form data from the 
             print("hello")
-            device_id = request.POST.get('device_id')
+            device_id = request.POST['device_id']
+
             # print(device_id)
             # battery_status = request.POST.get('battery_status')
             # device_status = request.POST.get('device_status')
@@ -93,7 +94,7 @@ def device_status_detail_view(request):
         
         except:
             # Return an error response for any exceptions
-            return JsonResponse({"error": f"Error occurred while processing the request "}, status=500)
+            return JsonResponse({"error": f"Error occurred while processing the requestssssssssssss "}, status=500)
 
 
 def device_status_detail_view___(request):
