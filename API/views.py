@@ -68,6 +68,35 @@ def add_device(request):
 def device_status_detail_view(request):
     if request.method == 'POST':
         try:
+            # Extract form data from the request
+            device_id = request.POST.get('device_id')
+            battery_status = request.POST.get('battery_status')
+            device_status = request.POST.get('device_status')
+            device_log = request.POST.get('device_log')
+            device_lat = request.POST.get('device_lat')
+            device_gforce = request.POST.get('device_gforce')
+            
+            # Create a new DeviceStatus object
+            device_status_obj = DeviceStatus.objects.create(
+                device_id=device_id,
+                battery_status=battery_status,
+                device_status=device_status,
+                device_log=device_log,
+                device_lat=device_lat,
+                device_gforce=device_gforce
+            )
+            
+            # Return a success response
+            return JsonResponse({"detail": f"Device status created for device {device_id}."}, status=201)
+        
+        except:
+            # Return an error response for any exceptions
+            return JsonResponse({"error": "Error occurred while processing the request"}, status=500)
+
+
+def device_status_detail_view___(request):
+    if request.method == 'POST':
+        try:
             # Extract JSON data from the request body
             request_data = json.loads(request.body)
             device_id = request_data.get('device_id')
