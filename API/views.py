@@ -70,7 +70,7 @@ def device_status_detail_view(request):
         try:
             # Extract form data from the 
             print("hello")
-            # device_id = request.POST.get('device_id')
+            device_id = request.POST.get('device_id')
             # print(device_id)
             # battery_status = request.POST.get('battery_status')
             # device_status = request.POST.get('device_status')
