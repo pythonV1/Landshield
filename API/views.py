@@ -89,7 +89,7 @@ def device_status_detail_view(request):
             # )
             
             # Return a success response
-            return JsonResponse({"detail": f"Device status created for device {device_id}."}, status=201)
+            return JsonResponse({"detail": f"Device status created for device ."}, status=201)
         
         except:
             # Return an error response for any exceptions
