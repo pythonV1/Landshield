@@ -68,7 +68,8 @@ def add_device(request):
 def device_status_detail_view(request):
     if request.method == 'POST':
         try:
-            # Extract form data from the request
+            # Extract form data from the 
+            print(device_id)
             device_id = request.POST.get('device_id')
             battery_status = request.POST.get('battery_status')
             device_status = request.POST.get('device_status')
