@@ -91,7 +91,7 @@ def device_status_detail_view(request):
         
         except:
             # Return an error response for any exceptions
-            return JsonResponse({"error": "Error occurred while processing the request"}, status=500)
+            return JsonResponse({"error": "Error occurred while processing the request {device_id}"}, status=500)
 
 
 def device_status_detail_view___(request):
