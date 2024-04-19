@@ -71,7 +71,7 @@ def device_status_detail_view(request):
         try:
             # Extract form data from the request
             print("hello")
-            device_id = request.POST.get('device_id')
+            device_id = request.data.get('device_id')
             # Check if device_id is None or not
             if device_id is not None:
                 # Device ID is present, proceed with processing
