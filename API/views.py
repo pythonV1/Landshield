@@ -71,74 +71,30 @@ def device_status_detail_view(request):
         try:
             # Extract form data from the request
             device_id = request.data.get('device_id')
-            # Check if device_id is None or not
-            if device_id is not None:
-                # Device ID is present, proceed with processing
-                # Your code here
-                return Response({"message": "Device status details retrieved successfully."})
-            else:
-                # Device ID is missing, return an error response
-                return Response({"error": "Missing 'device_id' field in form data"}, status=400)
-        except Exception as e:
-            # Return an error response for any exceptions
-            return Response({"error": f"Error occurred while processing the request: {str(e)}"}, status=500)
+            battery_status = request.data.get('battery_status')
+            device_status = request.data.get('device_status')
+            device_log = request.data.get('device_log')
+            device_lat = request.data.get('device_lat')
+            device_gforce = request.data.get('device_gforce')
+                # Create a new DeviceStatus object
+            device_status_obj = DeviceStatus.objects.create(
+                device_id=device_id,
+                battery_status=battery_status,
+                device_status=device_status,
+                device_log=device_log,
+                device_lat=device_lat,
+                device_gforce=device_gforce
+            )
+                   # Return a success response
+            return JsonResponse({"detail": f"Device status created for device {device_id}."}, status=201)
+        
+        except JSONDecodeError:
+            # Return an error response for invalid JSON data
+            return JsonResponse({"error": "Invalid JSON data in request body"}, status=400)
     else:
         # Return a response indicating that the HTTP method is not allowed
         return Response({"error": "Method Not Allowed"}, status=405)
 
-@api_view(['POST'])
-@csrf_exempt
-def device_status_detail_view9999999(request):
-    if request.method == 'POST':
-        try:
-            # Extract form data from the request
-            print("hello")
-            device_id = request.data.get('device_id')
-            # Check if device_id is None or not
-            if device_id is not None:
-                # Device ID is present, proceed with processing
-                # Your code here
-                pass
-            else:
-                # Device ID is missing, return an error response
-                return JsonResponse({"error": "Missing 'device_id' field in form data"}, status=400)
-        except Exception as e:
-            # Return an error response for any exceptions
-            return JsonResponse({"error": f"Error occurred while processing the request: {str(e)}"}, status=500)
-
-
-@api_view(['POST'])
-@csrf_exempt
-def device_status_detail_view666(request):
-    if request.method == 'POST':
-        try:
-            # Extract form data from the 
-            print("hello")
-            device_id = request.POST['device_id']
-
-            # print(device_id)
-            # battery_status = request.POST.get('battery_status')
-            # device_status = request.POST.get('device_status')
-            # device_log = request.POST.get('device_log')
-            # device_lat = request.POST.get('device_lat')
-            # device_gforce = request.POST.get('device_gforce')
-            
-            # # Create a new DeviceStatus object
-            # device_status_obj = DeviceStatus.objects.create(
-            #     device_id=device_id,
-            #     battery_status=battery_status,
-            #     device_status=device_status,
-            #     device_log=device_log,
-            #     device_lat=device_lat,
-            #     device_gforce=device_gforce
-            # )
-            
-            # Return a success response
-            return JsonResponse({"detail": f"Device status created for device ."}, status=201)
-        
-        except:
-            # Return an error response for any exceptions
-            return JsonResponse({"error": f"Error occurred while processing the requestssssssssssss "}, status=500)
 
 
 def device_status_detail_view___(request):
