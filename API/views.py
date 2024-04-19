@@ -64,6 +64,7 @@ def add_device(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
+@parser_classes([MultiPartParser])
 @csrf_exempt
 def device_status_detail_view(request):
     if request.method == 'POST':
