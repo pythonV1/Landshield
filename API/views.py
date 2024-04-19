@@ -66,6 +66,7 @@ def add_device(request):
 
 @api_view(['POST'])
 @csrf_exempt
+@parser_classes([MultiPartParser])
 def device_status_detail_view(request):
     if request.method == 'POST':
         try:
