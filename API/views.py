@@ -67,24 +67,32 @@ def add_device(request):
 @api_view(['POST'])
 @csrf_exempt
 @parser_classes([MultiPartParser])
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@api_view(['POST'])
+@csrf_exempt
 def device_status_detail_view(request):
     if request.method == 'POST':
         try:
             # Extract form data from the request
-            print("hello")
             device_id = request.data.get('device_id')
             # Check if device_id is None or not
             if device_id is not None:
                 # Device ID is present, proceed with processing
                 # Your code here
-                pass
+                return Response({"message": "Device status details retrieved successfully."})
             else:
                 # Device ID is missing, return an error response
-                return JsonResponse({"error": "Missing 'device_id' field in form data"}, status=400)
+                return Response({"error": "Missing 'device_id' field in form data"}, status=400)
         except Exception as e:
             # Return an error response for any exceptions
-            return JsonResponse({"error": f"Error occurred while processing the request: {str(e)}"}, status=500)
-
+            return Response({"error": f"Error occurred while processing the request: {str(e)}"}, status=500)
+    else:
+        # Return a response indicating that the HTTP method is not allowed
+        return Response({"error": "Method Not Allowed"}, status=405)
 
 @api_view(['POST'])
 @csrf_exempt
