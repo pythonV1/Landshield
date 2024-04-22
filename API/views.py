@@ -67,7 +67,7 @@ def add_device(request):
 @parser_classes([MultiPartParser])
 @csrf_exempt
 def device_status_detail_view(request):
-    if request.method == 'GET':
+    #if request.method == 'GET':
         try:
             # Extract query parameters from the request
             device_id = request.query_params.get('device_id')
@@ -101,9 +101,9 @@ def device_status_detail_view(request):
         except ValueError:
             # Return an error response for invalid parameter values
             return JsonResponse({"error": "Invalid parameter values"}, status=400)
-    else:
+    #else:
         # Return a response indicating that the HTTP method is not allowed
-        return Response({"error": "Method Not Allowed"}, status=405)
+    #   return Response({"error": "Method Not Allowed"}, status=405)
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser])
