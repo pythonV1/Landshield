@@ -144,6 +144,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'staticfiles/'
+STATIC_ROOT = '/home/ec2-user/Landshield/staticfiles/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'fmb_pdfs')
 MEDIA_URL = '/'
 
