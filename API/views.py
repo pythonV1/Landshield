@@ -63,10 +63,52 @@ def add_device(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
+@api_view(['GET'])
 @parser_classes([MultiPartParser])
 @csrf_exempt
 def device_status_detail_view(request):
+    if request.method == 'GET':
+        try:
+            # Extract query parameters from the request
+            device_id = request.query_params.get('device_id')
+            battery_status = request.query_params.get('battery_status')
+            device_status = request.query_params.get('device_status')
+            device_log = request.query_params.get('device_log')
+            device_lat = request.query_params.get('device_lat')
+            device_gforce = request.query_params.get('device_gforce')
+            api_key = request.query_params.get('api_key')
+            
+            # Validate API key
+            if api_key != 'NMD6V5E9VAONUD2C':
+                return JsonResponse({"error": "Invalid API key"}, status=401)
+            
+            # Create a new DeviceStatus object if all parameters are provided
+            if all([device_id, battery_status, device_status, device_log, device_lat, device_gforce]):
+                device_status_obj = DeviceStatus.objects.create(
+                    device_id=device_id,
+                    battery_status=battery_status,
+                    device_status=device_status,
+                    device_log=device_log,
+                    device_lat=device_lat,
+                    device_gforce=device_gforce
+                )
+                # Return a success response
+                return JsonResponse({"detail": f"Device status created for device {device_id}."}, status=201)
+            else:
+                # Return an error response if any parameter is missing
+                return JsonResponse({"error": "All parameters are required"}, status=400)
+        
+        except ValueError:
+            # Return an error response for invalid parameter values
+            return JsonResponse({"error": "Invalid parameter values"}, status=400)
+    else:
+        # Return a response indicating that the HTTP method is not allowed
+        return Response({"error": "Method Not Allowed"}, status=405)
+
+@api_view(['POST'])
+@parser_classes([MultiPartParser])
+@csrf_exempt
+def device_status_detail_view__old(request):
     if request.method == 'POST':
         try:
             # Extract form data from the request
