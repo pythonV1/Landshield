@@ -85,14 +85,15 @@ def device_status_detail_view(request):
                 return JsonResponse({"error": "Invalid API key"}, status=401)
             
             # Create a new DeviceStatus object if all parameters are provided
-            if all([device_id, battery_status, device_status, device_log, device_lat, device_gforce]):
+            if all([device_id, battery_status, device_status, device_log, device_lat, device_pitch,device_role]):
                 device_status_obj = DeviceStatus.objects.create(
                     device_id=device_id,
                     battery_status=battery_status,
                     device_status=device_status,
                     device_log=device_log,
                     device_lat=device_lat,
-                    device_gforce=device_gforce
+                    device_pitch=device_pitch,
+                    device_role=device_role,
                 )
                 # Return a success response
                 return JsonResponse({"detail": f"Device status created for device {device_id}."}, status=201)
