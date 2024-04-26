@@ -10,7 +10,7 @@ from .models import Device,DeviceStatus,District,Taluk,Village,Customer,Property
 class DeviceStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = DeviceStatus
-        fields = ['id', 'device_id', 'battery_status', 'device_status', 'device_log', 'device_lat', 'device_gforce']
+        fields = ['id', 'device_id', 'battery_status', 'device_status', 'device_log', 'device_lat', 'device_pitch','device_role']
 
 class DeviceSerializer(serializers.ModelSerializer):
     class Meta:

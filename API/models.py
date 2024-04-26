@@ -22,7 +22,8 @@ class DeviceStatus(models.Model):
     device_status = models.BooleanField(default=False)  # BooleanField
     device_log = models.CharField(max_length=100)
     device_lat = models.CharField(max_length=100)
-    device_gforce = models.CharField(max_length=100)
+    device_pitch = models.CharField(max_length=100)
+    device_role = models.CharField(max_length=100)
    
 
 class District(models.Model):

@@ -75,7 +75,9 @@ def device_status_detail_view(request):
             device_status = request.query_params.get('device_status')
             device_log = request.query_params.get('device_log')
             device_lat = request.query_params.get('device_lat')
-            device_gforce = request.query_params.get('device_gforce')
+            #device_gforce = request.query_params.get('device_gforce')
+            device_pitch = request.query_params.get('device_pitch')
+            device_role = request.query_params.get('device_role')
             api_key = request.query_params.get('api_key')
             
             # Validate API key
