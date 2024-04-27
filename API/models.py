@@ -23,7 +23,7 @@ class DeviceStatus(models.Model):
     device_log = models.CharField(max_length=100)
     device_lat = models.CharField(max_length=100)
     device_gforce = models.CharField(max_length=100)
-    device_movements = models.IntegerField(default=0)
+    device_movement = models.IntegerField(default=0)
    
 
 class District(models.Model):
