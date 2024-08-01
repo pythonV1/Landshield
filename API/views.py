@@ -108,6 +108,45 @@ def device_status_detail_view(request):
         # Return a response indicating that the HTTP method is not allowed
     #   return Response({"error": "Method Not Allowed"}, status=405)
 
+@api_view(['GET'])
+@parser_classes([MultiPartParser])
+@csrf_exempt
+def device_current_status_check(request):
+    if request.method == 'GET':
+        try:
+            # Extract query parameters from the request
+            device_id = request.query_params.get('device_id')
+            api_key = request.query_params.get('api_key')
+            
+            # Validate API key
+            if api_key != 'NMD6V5E9VAONUD2C':
+                return JsonResponse({"error": "Invalid API key"}, status=401)
+            
+            # Validate device_id
+            if not device_id:
+                return JsonResponse({"error": "Device ID is required"}, status=400)
+            
+            # Retrieve the device based on device_id
+            try:
+                device = Device.objects.get(device_id=device_id)
+            except Device.DoesNotExist:
+                return JsonResponse({"error": "Device not found"}, status=404)
+            
+            # Return the current status of the device
+            return JsonResponse({
+                "device_id": device.device_id,
+                "device_type": device.device_type.name,  # Assuming DeviceType has a 'name' field
+                "battery_status": device.battery_status,
+                "device_status": device.device_status
+            }, status=200)
+        
+        except ValueError:
+            # Return an error response for invalid parameter values
+            return JsonResponse({"error": "Invalid parameter values"}, status=400)
+    else:
+        # Return a response indicating that the HTTP method is not allowed
+        return JsonResponse({"error": "Method Not Allowed"}, status=405)
+
 @api_view(['POST'])
 @parser_classes([MultiPartParser])
 @csrf_exempt
