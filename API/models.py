@@ -11,6 +11,8 @@ class Device(models.Model):
     device_id = models.CharField(max_length=100)
     device_type = models.ForeignKey(DeviceType, on_delete=models.CASCADE)  # ForeignKey to DeviceType model
     battery_status = models.CharField(max_length=100, default='')
+    respont_frequency = models.IntegerField(default=0)
+
     device_status = models.BooleanField(default=False)  # BooleanField
     
     def __str__(self):
