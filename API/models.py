@@ -97,6 +97,7 @@ class Geolocation(models.Model):
     property_registration = models.ForeignKey(PropertyRegistration, related_name='geolocations', on_delete=models.CASCADE)
     latitude = models.FloatField()
     longitude = models.FloatField()
+    device_movement = models.IntegerField(default=0)
 
     def __str__(self):
         return f"Location for {self.property_registration.property_name}"

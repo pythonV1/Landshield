@@ -134,9 +134,9 @@ def device_current_status_check(request):
             
             # Return the current status of the device
             return JsonResponse({
-                "device_id": device.device_id,
-                "device_type": device.device_type.name,  # Assuming DeviceType has a 'name' field
-                "battery_status": device.battery_status,
+                #"device_id": device.device_id,
+                #"device_type": device.device_type.name,  # Assuming DeviceType has a 'name' field
+               # "battery_status": device.battery_status,
                 "device_status": device.device_status
             }, status=200)
         
