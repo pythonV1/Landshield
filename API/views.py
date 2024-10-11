@@ -765,11 +765,12 @@ class CustomerLoginAPI(APIView):
             # Check if the provided password matches the stored password
             if password == customer.password:
                 # Password matches
-                refresh = RefreshToken.for_user(customer)
-                token = {
-                    'refresh': str(refresh),
-                    'access': str(refresh.access_token),
-                }
+                
+                #refresh = RefreshToken.for_user(customer)
+                #token = {
+                #    'refresh': str(refresh),
+                #    'access': str(refresh.access_token),
+                # }
 
                 customer_data = CustomerSerializer(customer).data
 
