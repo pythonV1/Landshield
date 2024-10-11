@@ -56,7 +56,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Customer
-        fields = ['customer_id', 'name', 'email', 'mobile_number', 'address', 'aadhar_number', 'user_name', 'password']
+        fields = ['id', 'name', 'email', 'mobile_number', 'address', 'aadhar_number', 'user_name', 'password']
 
     def create(self, validated_data):
         # Hash the password before creating a new customer
