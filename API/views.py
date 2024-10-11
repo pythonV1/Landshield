@@ -759,7 +759,7 @@ class CustomerLoginAPI(APIView):
         
         try:
             # Retrieve the customer instance based on user_name
-            customer = Customer.objects.get(user_name=username)
+            customer = Customer.objects.get(email=username)
             print(f"Stored (hashed) password: {customer.password}")
 
             # Check if the provided password matches the stored password
