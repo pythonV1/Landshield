@@ -63,6 +63,57 @@ def add_device(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+
+@api_view(['GET', 'POST'])
+@parser_classes([MultiPartParser])
+@csrf_exempt
+def device_status_detail_view(request):
+    try:
+        # Extract query parameters from the request
+        device_id = request.query_params.get('device_id')
+        battery_status = request.query_params.get('battery_status')
+        device_status = request.query_params.get('device_status')
+        device_log = request.query_params.get('device_log')
+        device_lat = request.query_params.get('device_lat')
+        device_gforce = request.query_params.get('device_gforce')
+        device_movement = request.query_params.get('device_movement')
+        api_key = request.query_params.get('api_key')
+        
+        # Validate API key
+        if api_key != 'NMD6V5E9VAONUD2C':
+            return JsonResponse({"error": "Invalid API key"}, status=401)
+        
+        # Validate that required parameters are provided
+        if not all([device_id, battery_status, device_status, device_log, device_lat, device_gforce, device_movement]):
+            return JsonResponse({"error": "All parameters are required"}, status=400)
+        
+        # Retrieve the PropertyDeviceDevice object using device_id
+        property_device_device = get_object_or_404(PropertyDeviceDevice, device_id=device_id)
+        
+        # Update the device_movement field with the value from the API request
+        property_device_device.device_movement = device_movement
+        property_device_device.save()
+        
+        # Create a new DeviceStatus object
+        device_status_obj = DeviceStatus.objects.create(
+            device_id=device_id,
+            battery_status=battery_status,
+            device_status=device_status,
+            device_log=device_log,
+            device_lat=device_lat,
+            device_gforce=device_gforce,
+            device_movement=device_movement,
+        )
+        
+        # Return a success response
+        return JsonResponse({"detail": f"Device status created for device {device_id} and movement updated."}, status=201)
+    
+    except ValueError:
+        # Return an error response for invalid parameter values
+        return JsonResponse({"error": "Invalid parameter values"}, status=400)
+
+""" 
 @api_view(['GET', 'POST'])
 @parser_classes([MultiPartParser])
 @csrf_exempt
@@ -107,7 +158,7 @@ def device_status_detail_view(request):
     #else:
         # Return a response indicating that the HTTP method is not allowed
     #   return Response({"error": "Method Not Allowed"}, status=405)
-
+ """
 @api_view(['GET'])
 @parser_classes([MultiPartParser])
 @csrf_exempt
@@ -684,6 +735,41 @@ class LoginAPI(APIView):
         else:
             # Invalid credentials
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class CustomerLoginAPI(APIView):
+    def post(self, request):
+        # Extract username and password from the request
+        username = request.data.get('user_name')  # Use the field name in the Customer model
+        password = request.data.get('password')
+
+        try:
+            # Retrieve the customer instance
+            customer = Customer.objects.get(user_name=username)
+
+            # Check if the provided password matches the stored password
+            if check_password(password, customer.password):
+                # Password is correct
+                # Create a JWT token for the user
+                refresh = RefreshToken.for_user(customer)
+                token = {
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
+                }
+                return Response({
+                    'message': 'Login successful',
+                    'token': token,
+                    'customerName': customer.name,
+                    'address': customer.address
+                }, status=status.HTTP_200_OK)
+            else:
+                # Invalid password
+                return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        except Customer.DoesNotExist:
+            # Customer not found
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 
 def my_view(request):
