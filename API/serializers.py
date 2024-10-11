@@ -46,11 +46,31 @@ class VillageSerializer(serializers.ModelSerializer):
     def get_taluk_name(self, obj):
         return obj.taluk.name if obj.taluk else None
     
+#class CustomerSerializer(serializers.ModelSerializer):
+#    class Meta:
+#       model = Customer
+#      fields = ['customer_id', 'name', 'email','mobile_number','address','aadhar_number']
+        
 class CustomerSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)  # Ensure password is write-only
+
     class Meta:
         model = Customer
-        fields = ['customer_id', 'name', 'email','mobile_number','address','aadhar_number']
-        
+        fields = ['customer_id', 'name', 'email', 'mobile_number', 'address', 'aadhar_number', 'user_name', 'password']
+
+    def create(self, validated_data):
+        # Hash the password before creating a new customer
+        if 'password' in validated_data:
+            validated_data['password'] = make_password(validated_data['password'])
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        # Hash the password if it is being updated
+        if 'password' in validated_data:
+            validated_data['password'] = make_password(validated_data['password'])
+        return super().update(instance, validated_data)
+    
+    
 class GeolocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Geolocation
