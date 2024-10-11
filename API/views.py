@@ -788,7 +788,7 @@ class CustomerLoginAPI(APIView):
             # Customer with the given user_name not found
             return Response({'error': 'Invalid credentials, customer not found'}, status=status.HTTP_401_UNAUTHORIZED)
 
-class CustomerLoginAPI2(APIView):
+class CustomerLoginAPI1(APIView):
     def post(self, request):
         # Verify API key
         api_key = request.headers.get('api_key')
