@@ -742,11 +742,13 @@ class CustomerLoginAPI(APIView):
         # Extract username and password from the request
         username = request.data.get('user_name')  # Use the field name in the Customer model
         password = request.data.get('password')
-
+         # Print the username and password for debugging
+        print(f"Username: {username}")
+        print(f"Password: {password}")
         try:
             # Retrieve the customer instance
             customer = Customer.objects.get(user_name=username)
-
+            print(f"Password: {customer.password}")
             # Check if the provided password matches the stored password
             if check_password(password, customer.password):
                 # Password is correct
@@ -764,11 +766,11 @@ class CustomerLoginAPI(APIView):
                 }, status=status.HTTP_200_OK)
             else:
                 # Invalid password
-                return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response({'error': 'Invalid credentials inside value'}, status=status.HTTP_401_UNAUTHORIZED)
 
         except Customer.DoesNotExist:
             # Customer not found
-            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'error': 'Invalid credentials 1234'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 
