@@ -767,6 +767,10 @@ class CustomerLoginAPI(APIView):
                 }, status=status.HTTP_200_OK)
             else:
                 # Invalid password
+                customer_verify = check_password(password, customer.password)
+                print(f"customer_verify: {customer_verify}")
+                print(f"Password new: {password}")
+                print(f"Password customer: {customer.password}")
                 return Response({'error': 'Invalid credentials inside value'}, status=status.HTTP_401_UNAUTHORIZED)
 
         except Customer.DoesNotExist:
