@@ -62,8 +62,7 @@ class Customer(models.Model):
     address = models.TextField()
     aadhar_number = models.CharField(max_length=12, unique=True)
     user_name = models.CharField(max_length=255)  # Customer's username
-    password = models.CharField(max_length=255)  # Customer's password (hash this in practice)
-
+    password = models.CharField(max_length=255, default='default_password') 
 
     def __str__(self):
         return self.name
