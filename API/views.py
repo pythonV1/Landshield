@@ -767,10 +767,10 @@ class CustomerLoginAPI(APIView):
                 # Password matches
                 
                 #refresh = RefreshToken.for_user(customer)
-                #token = {
-                #    'refresh': str(refresh),
-                #    'access': str(refresh.access_token),
-                # }
+                token = {
+                    'refresh': str(api_key),
+                   'access': str(api_key),
+                 }
 
                 customer_data = CustomerSerializer(customer).data
 
