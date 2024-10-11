@@ -788,6 +788,53 @@ class CustomerLoginAPI(APIView):
             # Customer with the given user_name not found
             return Response({'error': 'Invalid credentials, customer not found'}, status=status.HTTP_401_UNAUTHORIZED)
 
+class CustomerLoginAPI2(APIView):
+    def post(self, request):
+        # Verify API key
+        api_key = request.headers.get('api_key')
+        if api_key != API_KEY:
+            return Response({'error': 'Invalid API key'}, status=status.HTTP_403_FORBIDDEN)
+        
+        # Extract username and password from the request
+        username = request.data.get('user_name')  # Ensure you're using 'user_name' from Customer model
+        password = request.data.get('password')
+
+        # Debugging output
+        print(f"Username: {username}")
+        print(f"Password: {password}")
+        
+        try:
+            # Retrieve the customer instance based on user_name
+            customer = Customer.objects.get(email=username)
+            print(f"Stored (hashed) password: {customer.password}")
+
+            # Check if the provided password matches the stored password
+            if password == customer.password:
+                # Password matches
+                
+                refresh = RefreshToken.for_user(customer)
+                token = {
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
+                }
+
+                customer_data = CustomerSerializer(customer).data
+
+                return Response({
+                    'message': 'Login successful',
+                    'token': token,
+                    'customer': customer_data
+                }, status=status.HTTP_200_OK)
+            else:
+                # Invalid password
+                print("Password mismatch")
+                return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        except Customer.DoesNotExist:
+            # Customer with the given user_name not found
+            return Response({'error': 'Invalid credentials, customer not found'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
 class CustomerLoginAPI____(APIView):
     def post(self, request):
         # Extract username and password from the request
