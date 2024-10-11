@@ -55,7 +55,7 @@ class Village(models.Model):
     
     
 class Customer(models.Model):
-    customer_id = models.AutoField(primary_key=True)
+    #customer_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, null=True, blank=True)
     mobile_number = models.CharField(max_length=15)
