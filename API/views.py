@@ -745,7 +745,7 @@ API_KEY = "NMD6V5E9VAONUD2C"  # Example API key
 class CustomerLoginAPI(APIView):
     def post(self, request):
         # Verify API key
-        api_key = request.headers.get('API_KEY')
+        api_key = request.headers.get('api_key')
         if api_key != API_KEY:
             return Response({'error': 'Invalid API key'}, status=status.HTTP_403_FORBIDDEN)
         
@@ -763,7 +763,7 @@ class CustomerLoginAPI(APIView):
             print(f"Stored (hashed) password: {customer.password}")
 
             # Check if the provided password matches the stored password
-            if check_password(password, customer.password):
+            if password == customer.password:
                 # Password matches
                 refresh = RefreshToken.for_user(customer)
                 token = {
