@@ -754,15 +754,16 @@ class CustomerLoginAPI(APIView):
         password = request.data.get('password')
 
         # Debugging output
-        print(f"Username: {username}")
-        print(f"Password: {password}")
+        #print(f"Username: {username}")
+        #print(f"Password: {password}")
         
         try:
             # Retrieve the customer instance based on user_name
             customer = Customer.objects.get(email=username)
-            print(f"Stored (hashed) password: {customer.password}")
+            #print(f"Stored (hashed) password: {customer.password}")
 
             # Check if the provided password matches the stored password
+            # if check_password(password, customer.password):
             if password == customer.password:
                 # Password matches
                 
@@ -776,12 +777,13 @@ class CustomerLoginAPI(APIView):
                 }, status=status.HTTP_200_OK)
             else:
                 # Invalid password
-                print("Password mismatch")
+                #print("Password mismatch")
                 return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
         except Customer.DoesNotExist:
             # Customer with the given user_name not found
             return Response({'error': 'Invalid credentials, customer not found'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 class CustomerLoginAPI1(APIView):
     def post(self, request):
