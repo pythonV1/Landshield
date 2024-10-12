@@ -766,17 +766,12 @@ class CustomerLoginAPI(APIView):
             if password == customer.password:
                 # Password matches
                 
-                #refresh = RefreshToken.for_user(customer)
-                token = {
-                    'refresh': str(api_key),
-                   'access': str(api_key),
-                 }
+               
 
                 customer_data = CustomerSerializer(customer).data
 
                 return Response({
                     'message': 'Login successful',
-                    'token': token,
                     'customer': customer_data
                 }, status=status.HTTP_200_OK)
             else:
