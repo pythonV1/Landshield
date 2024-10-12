@@ -806,7 +806,9 @@ class CustomerLoginAPI1(APIView):
             print(f"Stored (hashed) password: {customer.password}")
 
             # Check if the provided password matches the stored password
-            if password == customer.password:
+            #if password == customer.password:
+            print(f"Password: {check_password(password, customer.password)}")
+            if check_password(password, customer.password):
                 # Password matches
                 
                 refresh = RefreshToken.for_user(customer)
