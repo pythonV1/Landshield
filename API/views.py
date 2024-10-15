@@ -90,7 +90,8 @@ def device_status_detail_view(request):
             return JsonResponse({"error": "All parameters are required"}, status=400)
         
         # Retrieve the PropertyDeviceDevice object using device_id
-        property_device_device = get_object_or_404(PropertyDeviceDevice, device_id=device_id)
+        device = get_object_or_404(Device, device_id=device_id)
+        property_device_device = get_object_or_404(PropertyDeviceDevice, device_id=device.id)
         
         # Update the device_movement field with the value from the API request
         property_device_device.device_movement = device_movement
