@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Device,DeviceStatus, DeviceType, District,Taluk,Village,Customer,PropertyRegistration,PropertyDevice,PropertyDeviceDevice
+from .models import Device,DeviceStatus, DeviceType, District,Taluk,Village,Customer,PropertyRegistration,PropertyDevice,PropertyDeviceDevice,Geolocation
 
 # Register your models here.
 class DeviceAdmin(admin.ModelAdmin):
@@ -24,6 +24,7 @@ admin.site.register(Customer)
 admin.site.register(PropertyRegistration)
 admin.site.register(PropertyDevice)
 admin.site.register(PropertyDeviceDevice)
+admin.site.register(Geolocation)
 
 #admin.site.unregister(Taluk)
 #admin.site.register(Taluk)
